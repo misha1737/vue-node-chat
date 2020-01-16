@@ -1,0 +1,141 @@
+header{
+    width:100%;
+    height:40px;
+    position:fixed;
+    top:0;
+     background:$green;
+     z-index:50;
+    .topMenu{
+        width:1000px; 
+        margin:auto;
+        display:flex;
+        padding-left: 0px;
+        height: 40px;
+        align-items: center;
+        position: relative;
+        flex-direction: row;
+        .nav-item{
+           
+           list-style: none; 
+           a{
+               text-transform: uppercase;
+               font-size: 14px;
+                color:white;
+                text-decoration: none;
+                margin-right:20px;
+                &:hover{
+                    color:#fff5;
+                  }
+           
+        }
+    }
+    
+}
+.hamburger{
+    display:none;
+    width:30px;
+    height:30px;   
+    margin-top: 5px;
+    margin-left: 17px;
+    border-radius:50%;
+    position: relative;
+    cursor:pointer;
+    opacity:0.9;
+    img{
+        position: absolute;
+        top:5px;
+        left:5px;
+        width:20px;
+        height:20px;
+    }
+    &.active{
+        background: $green-dark;
+    }
+    &:hover{
+        opacity:1; 
+    }
+}
+.userHeaderBlock{
+        position:absolute;
+        right:0px;
+        top:0px;
+        color:white;
+        text-transform: uppercase;
+               font-size: 14px;
+        .loginName{
+            padding-left: 16px;
+             float:right;
+            right:85px;
+            max-width: 200px;
+            margin-right: 0px;
+            overflow: hidden;
+            height:40px;
+            height: 30px;
+            text-align: right;
+            //width:100px;       
+        }
+        .signOut{
+            padding-left: 16px;
+            float:right;
+            cursor:pointer;
+             &:hover{
+                    color:#fff5;
+                  }
+        }
+} 
+
+}
+@media screen and (max-width: 1100px) {
+    header{
+        .hamburger{
+            display:inline-block;
+        }
+
+        .topMenu{
+            top: -50vh;
+            background:#00000099;
+            position: absolute;
+            height:0;
+            padding: 0px 15px;
+            width:calc(100% - 30px); 
+            margin:0;
+            flex-direction: column;
+            justify-content: start;
+            transform: scaleY(0);
+            transition: 0.5s;
+            align-items: center;
+            position: relative;
+            z-index: 45;
+            opacity: 0;
+            .nav-item{
+               margin-top: 40px;
+               a{
+                   font-size: 24px;
+            }
+          
+        }
+        .userHeaderBlock{
+            width:100%;
+            .loginName{
+                float:none;
+                margin-left:15px;
+                max-width:auto;
+                text-align: left;
+            }
+
+        }
+        &.active{
+            height:100vh;
+            transform: scaleY(1);
+            top:0;
+            opacity: 1;
+        }
+    }
+
+
+        .userHeaderBlock{
+            right:15px;
+        }
+    }
+
+}

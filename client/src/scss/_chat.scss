@@ -1,0 +1,182 @@
+.chat{
+    border-radius:5px;
+    position: relative;
+    h3 {
+      margin: 40px 0 0;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    a {
+      color: #42b983;
+    }
+
+    .chatContent{
+        width:75%;
+        position: relative;
+        border-radius:5px 5px 0px 0px;
+        background:white;
+        height: calc(100vh - 300px);
+        overflow-y: scroll;
+        margin: 0px;
+        li{
+            width: 100%;
+            &.ownMessage{
+                text-align: right;
+                .chatMessage {
+               
+                border-radius: 10px 10px 0px 10px;
+                    &:before{
+                        left:auto;
+                        right:-15px;
+                        border-radius: 0px 0px 0px 0px;
+                    }
+                    &:after{
+                        position: absolute;
+                        left:auto;
+                        right:-15px;
+                        border-radius: 0px 0px 0px 20px;
+                    }
+                }
+            }
+            .chatMessage {
+                position:relative;
+                word-break: break-all;
+                display:inline-block;
+                background:#277661;
+                color:white;
+                //padding:20px;
+                text-align: left;
+                margin: 5px 20px;
+                padding:5px 20px;
+                border-radius: 10px 10px 10px 0px;
+               // margin-right: 20px;
+                
+                  
+                            .messageUser{
+                                margin:0px;
+                                font-weight: bold;
+                                font-size: 16px; 
+                            }
+                            .message{
+                                font-size: 16px;
+                                text-align: left;
+                            }
+                            .messageTime{
+                                font-size: 12px;
+                                text-align: right;
+                                opacity: 0.7;
+                                margin-left: 20px;
+                            }
+               
+                &:before{
+                    content:' ';
+                    width:15px;
+                    height:15px;
+                    background:#277661;
+                    position: absolute;
+                    left:-15px;
+                    bottom:0px;
+                    border-radius: 0px 0px 0px 0px;
+                }
+                &:after{
+                    content:' ';
+                    width:15px;
+                    height:15px;
+                    background:white;
+                    position: absolute;
+                    left:-15px;
+                    bottom:0px;
+                    border-radius: 0px 0px 20px 0px;
+                }
+            }
+
+
+    }
+   
+
+
+    }
+    .messageForm{
+        background: white;
+        border-radius:0px 0px 5px 5px;
+        border-top:1px solid #27766122;
+        text-align: right;
+        width:75%;
+        .form-control{
+            resize: none;
+            width:calc(100% - 20px);
+            
+            outline:none !important;
+            border:none;
+            
+            padding: 10px;
+            
+            height: 46px;
+            font-family: $Helvetica;
+            font-size: 14px;
+            margin-bottom: 0px;
+           
+        }
+        //position: absolute;
+        button.sendMessage{
+            margin: 0px;
+            
+            border-radius: 0px 0px 5px 5px;
+          
+     
+        }
+    }
+
+  }
+  .userOnline{
+    display:inline-block;
+      background: $green;
+      width: 24%;
+      position: absolute;
+      top:0;
+      right:0;
+      border-radius: 5px;
+      
+      //margin-left: 2%;
+      height: calc(100vh - 193px);
+      h2{
+        color:#ffffffcc;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 16px;;
+        text-align:center;
+        padding:10px;
+      }
+      li{
+            overflow: hidden;
+            color:#ffffffcc;
+            list-style: none;
+            margin:0px 10px;
+            width:calc(100% - 20px);
+            overflow:hidden;
+            height: 22px;
+            line-height: 20px;
+           // padding:15px;
+      }
+  }
+
+@media screen and (max-width: 800px) {
+    .chat{
+        .chatContent{
+            width:100%;
+        }
+        .messageForm{
+            width:100%;
+        }
+        .userOnline{
+            width:100%;
+            position: relative;
+            height:auto;
+            margin-top: 20px;
+        }
+    }
+
+
+}
