@@ -35,7 +35,6 @@ app.post("/authorization", routes.authorization);
 app.post("/registration", routes.registration);
 app.post("/uploadImg", routes.uploadImg);
 app.get("/logout", routes.logout);
-app.get("/chat", routes.chat);
 app.get("/", function(req, res) {
   if (req.session.userLogin) {
     res.status(200).send({ login: req.session.userLogin });

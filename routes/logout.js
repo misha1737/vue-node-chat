@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-var User = require("../models/user.js").User;
-const bcrypt = require("bcryptjs");
 
 router.get("/logout", function(req, res) {
   if (req.session) {

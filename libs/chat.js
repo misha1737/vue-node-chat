@@ -8,9 +8,6 @@ chat = function(io) {
   let users = [];
   let connections = [];
 
-  {
-  }
-
   io.sockets.on("connection", function(socket) {
     let userName;
     let userMessages = 0; //для ігнорування повідомлеть при витягненні з бази
