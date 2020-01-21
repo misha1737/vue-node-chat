@@ -47,7 +47,7 @@ export default {
   data(){
       return{
             data: 'text data message', 
-            socket: io("http://kmuauto.ru:5000"),
+            socket: io("http://localhost:5000"),
             textMessage: '',
             chatHistory: [],
             userData: '',

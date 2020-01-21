@@ -39,7 +39,7 @@ export default {
    beforeCreate(){
              axios({
                     method: 'get',
-                    url: 'http://kmuauto.ru:5000/',
+                    url: 'http://localhost:5000/',
                     crossDomain: true,
                     withCredentials: true
                     }).then(response => {

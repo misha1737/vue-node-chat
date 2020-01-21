@@ -11,6 +11,10 @@ var schema = new Schema(
     password: {
       type: String,
       required: true
+    },
+    logoUrl:{
+      type: String,
+      required: false
     }
   },
   {

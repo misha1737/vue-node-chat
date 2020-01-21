@@ -53,7 +53,7 @@ import axios from 'axios'
             signOut(){
                  axios({
                     method: 'get',
-                    url: 'http://kmuauto.ru:5000/logout',
+                    url: 'http://localhost:5000/logout',
                     crossDomain: true,
                     withCredentials: true
                     }).then(response => {

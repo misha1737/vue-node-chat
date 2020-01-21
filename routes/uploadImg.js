@@ -1,23 +1,24 @@
 const express = require("express");
 const router = express.Router();
-
 const path = require("path");
 var multer = require("multer");
 var fs = require("fs");
-var dirname = "uploads/upl";
+var dirname = "undefined";
+var User = require("../models/user.js").User;
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
-      fs.statSync(dirname);
+      fs.statSync('uploads/'+dirname);
       console.log("file or directory exists");
     } catch (err) {
       if (err.code === "ENOENT") {
-        fs.mkdirSync(dirname);
+        fs.mkdirSync('uploads/'+dirname);
         console.log("file or directory does not exist");
       }
     }
 
-    cb(null, dirname);
+    cb(null, 'uploads/'+dirname);
   },
   filename: (req, file, cb) => {
     console.log(file.originalname);
@@ -41,14 +42,24 @@ const upload = multer({
 }).single("filedata");
 
 router.post("/uploadImg", function(req, res, next) {
+  console.log(req.session.userLogin)
+  dirname=req.session.userLogin;
   upload(req, res, err => {
+   
     if (err) {
       if (err.code === "LIMIT_FILE_SIZE") {
-        res.send("Файл дуже великий");
+        res.status(413).send("file too big");
       } else if (err.code === "EXTENTION") {
-        res.send("невірний формат");
+        
+        res.status(415).send("wrong format");
+        
       }
     } else {
+     
+      User.findOneAndUpdate({'login':req.session.userLogin}, {$set: { logoUrl:  req.file.destination+"/"+req.file.filename }},  function(err){
+        console.log(err)
+
+      });
       res.send("ok");
     }
   });

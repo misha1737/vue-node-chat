@@ -10,8 +10,9 @@ const MongoStore = require("connect-mongo")(session);
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({ origin: "http://kmuauto.ru", credentials: true }));
+app.use(cors({ origin: "http://localhost:81", credentials: true }));
 app.use(cookieParser());
+app.use(express.static('uploads'));
 const routes = require("./routes");
 
 //sesions
@@ -27,7 +28,7 @@ app.use(
 );
 
 server.listen(process.env.PORT || 5000, function() {
-  console.log("listening on *http://kmuauto.ru:5000");
+  console.log("listening on *http://localhost:5000");
 });
 
 //routes
@@ -43,11 +44,11 @@ app.get("/", function(req, res) {
   }
 });
 
-app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err.status = 404;
-  res.send("error 404");
-});
+// app.use((req, res, next) => {
+//   const err = new Error("Not Found");
+//   err.status = 404;
+//   res.send("error 404");
+// });
 
 //chat
 require("./libs/chat")(io);

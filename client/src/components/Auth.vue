@@ -69,12 +69,12 @@ export default {
                 axios.defaults.withCredentials = true;
                 axios({
                     method: 'post',
-                    url: 'http://kmuauto.ru:5000/authorization',
+                    url: 'http://localhost:5000/authorization',
                     crossDomain: true,
                     headers: {
                         'Access-Control-Allow-Headers': 'Content-Type',
                         'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Allow-Origin': 'http://kmuauto.ru/',
+                        'Access-Control-Allow-Origin': 'http://localhost/',
                         'Access-Control-Allow-Methods': 'GET, POST'
                         
                     },
@@ -99,12 +99,12 @@ export default {
                 axios.defaults.withCredentials = true;
                 axios({
                     method: 'post',
-                    url: 'http://kmuauto.ru:5000/registration',
+                    url: 'http://localhost:5000/registration',
                     crossDomain: true,
                     headers: {
                         'Access-Control-Allow-Headers': 'Content-Type',
                         'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Allow-Origin': 'http://kmuauto.ru',
+                        'Access-Control-Allow-Origin': 'http://localhost',
                         'Access-Control-Allow-Methods': 'GET, POST'
                         
                     },

@@ -1,19 +1,19 @@
-
 <template>
   <div class="ChatPage">
     <h1>Home</h1>
     <div class="selectImg" @click="OpenFileSelect()">
       selectImg
     </div>
-<form  method="post" enctype="multipart/form-data" id="form-logo-upload">
+    {{errorMsg}}
+    <form method="post" enctype="multipart/form-data" id="form-logo-upload">
       <input
-      class="inputFile"
-      type="file"
-      name="filedata"
-      id="logo-upload"
-      @change="UploadLogo()"
-      accept="image/*"
-    />
+        class="inputFile"
+        type="file"
+        name="filedata"
+        id="logo-upload"
+        @change="UploadLogo()"
+        accept="image/*"
+      />
     </form>
   </div>
 </template>
@@ -21,37 +21,70 @@
 <script>
 import Axios from "axios";
 export default {
-  name: 'HomePage',
+  name: "HomePage",
+  data() {
+    return {
+     errorMsg:''
+    };
+  },
   props: {
     msg: String
   },
-  methods:{
-    OpenFileSelect(){
+  methods: {
+    OpenFileSelect() {
       let el = document.getElementById("logo-upload");
       if (el) el.click();
     },
-    UploadLogo(){
+    UploadLogo() {
       let el = document.getElementById("form-logo-upload");
-      var formData= new FormData(el);
-         Axios.post("http://kmuauto.ru:5000/uploadImg", formData
-        ).then(res => {
-          console.log(res);  
+      var formData = new FormData(el);
+
+      //  Axios.post("http://localhost:5000/uploadImg", formData
+      // ).then(res => {
+      //   console.log(res);
+      // });
+
+      Axios({
+        method: "post",
+        url: "http://localhost:5000/uploadImg",
+        crossDomain: true,
+        withCredentials: true,
+        data: formData
+      })
+        .then(response => {
+          // this.$emit('logout', this.regLogin )
+          this.errorMsg='';
+          console.log("file downloaded");
+        })
+        .catch(error => {
+          console.log(error);
+          switch (error.response.data) {
+            case "file too big":
+              this.errorMsg = "file too big";
+              break;
+            case "wrong format":
+              this.errorMsg = "wrong format";
+              break;
+            default:
+              this.errorMsg = "unknown error";
+              break;
+          }
         });
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.selectImg{
+.selectImg {
   background-color: yellow;
-  width:200px;
-  height:200px;
+  width: 200px;
+  height: 200px;
   text-align: center;
-  margin:auto;
+  margin: auto;
 }
-.inputFile{
-  opacity:0.5;
+.inputFile {
+  opacity: 0.5;
 }
 </style>
