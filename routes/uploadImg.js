@@ -55,8 +55,8 @@ router.post("/uploadImg", function(req, res, next) {
         
       }
     } else {
-     
-      User.findOneAndUpdate({'login':req.session.userLogin}, {$set: { logoUrl:  req.file.destination+"/"+req.file.filename }},  function(err){
+     console.log(req.file)
+      User.findOneAndUpdate({'login':req.session.userLogin}, {$set: { logoUrl:  dirname+"/"+req.file.filename }},  function(err){
         console.log(err)
 
       });

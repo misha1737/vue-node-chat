@@ -29,7 +29,18 @@ header{
            
         }
     }
-    
+    .loginImg{
+        float: right;
+        width: 22px;
+        height: 22px;
+        background: white;
+        border-radius: 50%;
+        padding: 5px;
+        margin-top: 4px;
+        img{
+            opacity:0.5;
+        }
+    }
 }
 .hamburger{
     display:none;
@@ -69,8 +80,7 @@ header{
             max-width: 200px;
             margin-right: 0px;
             overflow: hidden;
-            height:40px;
-            height: 30px;
+            height: 18px;
             text-align: right;
             //width:100px;       
         }
