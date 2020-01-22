@@ -44,6 +44,9 @@ const upload = multer({
 router.post("/uploadImg", function(req, res, next) {
   console.log(req.session.userLogin)
   dirname=req.session.userLogin;
+
+
+
   upload(req, res, err => {
    
     if (err) {
@@ -55,12 +58,34 @@ router.post("/uploadImg", function(req, res, next) {
         
       }
     } else {
-     
-      User.findOneAndUpdate({'login':req.session.userLogin}, {$set: { logoUrl:  req.file.destination+"/"+req.file.filename }},  function(err){
-        console.log(err)
+     console.log(req.file)
 
-      });
-      res.send("ok");
+     User.findOne({'login':req.session.userLogin}).then(user => {
+      if (user.logoUrl) {
+          console.log('image yes');
+          //удалить старое изображения
+          fs.unlink("./uploads/"+user.logoUrl, function(err) {
+            if (err){  console.log(err);}
+          
+            console.log('file deleted');
+           
+          });
+          //
+      user.update({ logoUrl:  dirname+"/"+req.file.filename },  function(err){
+        console.log(err)
+        });
+        res.send({ login: req.session.userLogin, logoUrl:dirname+"/"+req.file.filename });  
+        
+      }else{
+        console.log('image no');
+        user.update({ logoUrl:  dirname+"/"+req.file.filename },  function(err){
+          console.log(err)
+          });
+        res.send({ login: req.session.userLogin, logoUrl:dirname+"/"+req.file.filename });
+      }
+     });
+
+      
     }
   });
 });

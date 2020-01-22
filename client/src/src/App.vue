@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div >
+    <div>
     <Header :login='login' :user='user' @logout='logout'></Header>
     <authorization class="pageContent" @login='Login' v-if='!user'></authorization>  
     <router-view class="pageContent" :login='login' v-if='user'></router-view>
@@ -46,7 +46,6 @@ export default {
                        console.log(response.data.login);
                        this.login=response.data.login;
                        this.user=true;
-                      
                     })
                     
                    

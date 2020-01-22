@@ -85,7 +85,7 @@ export default {
                     }
                     }).then(response => {
                     console.log(response);
-                    this.$emit('login', this.login);
+                    this.$emit('login', {loginName:response.data.login, logo:response.data.logoUrl});
                 })
                 .catch(error => {
                 console.log(error.response.data);
@@ -116,7 +116,7 @@ export default {
 
                     .then(response => {
                         console.log(response);
-                       this.$emit('login', this.regLogin )
+                       this.$emit('login', {loginName:response.data.login, logo:response.data.logoUrl} )
                     })
                     .catch(error => {
                     console.log(error.response.data);

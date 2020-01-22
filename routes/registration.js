@@ -25,11 +25,12 @@ router.post("/registration", function(req, res) {
           if (err) {
             res.status(401).send("name is already taken");
           } else {
-            res.status(201).send("User created");
-            console.log(user.login + " user created");
-
             req.session.userId = user.id;
             req.session.userLogin = user.login;
+            res.status(201).send({ login: req.session.userLogin, logoUrl:user.logoUrl });
+            console.log(user.login + " user created");
+
+            
           }
         });
       });

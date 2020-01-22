@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div >
-    <Header :login='login' :user='user' @logout='logout'></Header>
-    <authorization class="pageContent" @login='Login' v-if='!user'></authorization>  
-    <router-view class="pageContent" :login='login' v-if='user'></router-view>
+    <Header :login='login' :logoUrl='logoUrl'  :user='user' @logout='logout'></Header>
+    <authorization class="pageContent" @login='Login'  v-if='!user'></authorization>  
+    <router-view class="pageContent" :login='login'  @login='Login' :logoUrl='logoUrl' v-if='user'></router-view>
     </div>
   </div>
 </template>
@@ -19,7 +19,8 @@ export default {
    data(){
             return{
               login:'',
-              user:false
+              user:false,
+              logoUrl:''
             }
         },
   components: {
@@ -27,13 +28,17 @@ export default {
     authorization
   },
   methods:{
-    Login(login){
-      this.login=login;
+    Login(user){
+      this.login=user.loginName;
       this.user=true;
+       if(user.logo){
+                      this.logoUrl='http://localhost:5000/'+user.logo;
+                       }
     },
     logout(){
       this.login='';
       this.user=false;
+      this.logoUrl='';
     }
   },
    beforeCreate(){
@@ -46,10 +51,10 @@ export default {
                        console.log(response.data.login);
                        this.login=response.data.login;
                        this.user=true;
-                      
-                    })
-                    
-                   
+                       if(response.data.logoUrl){
+                      this.logoUrl='http://localhost:5000/'+response.data.logoUrl;
+                       }
+                    })    
         } 
         
 }

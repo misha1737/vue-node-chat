@@ -23,7 +23,11 @@ router.post("/authorization", function(req, res) {
             req.session.userId = user.id;
             req.session.userLogin = user.login;
            
-            res.status(200).send("success");
+           
+            User.findOne({ login: req.session.userLogin }).then(user => {
+           
+              res.status(200).send({ login: req.session.userLogin, logoUrl:user.logoUrl });
+             });
           } else {
             res.status(401).send("password error");
           }

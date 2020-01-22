@@ -1,8 +1,16 @@
 <template>
   <div class="ChatPage">
     <h1>Home</h1>
-    <div class="selectImg" @click="OpenFileSelect()">
-      selectImg
+    
+
+    <div class="changeImg" v-if="logoUrl" @click="OpenFileSelect()">
+       <img :src='logoUrl' >
+       <p>click to change photo</p>
+    </div>
+
+    <div  v-else class="selectImg" @click="OpenFileSelect()">
+      <img src="../assets/user.svg" >
+      <p>click to upload photo</p>
     </div>
     {{errorMsg}}
     <form method="post" enctype="multipart/form-data" id="form-logo-upload">
@@ -28,7 +36,8 @@ export default {
     };
   },
   props: {
-    msg: String
+    msg: String,
+    logoUrl: String
   },
   methods: {
     OpenFileSelect() {
@@ -52,7 +61,8 @@ export default {
         data: formData
       })
         .then(response => {
-          // this.$emit('logout', this.regLogin )
+          console.log(response.data.logoUrl);
+          this.$emit('login', {loginName:response.data.login, logo:response.data.logoUrl} )
           this.errorMsg='';
           console.log("file downloaded");
         })
@@ -77,14 +87,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.selectImg {
-  background-color: yellow;
-  width: 200px;
-  height: 200px;
-  text-align: center;
-  margin: auto;
-}
-.inputFile {
-  opacity: 0.5;
-}
+@import "./../scss/_variables.scss";
+@import "./../scss/_userpage.scss";
+
 </style>
