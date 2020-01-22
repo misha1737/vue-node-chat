@@ -3,8 +3,8 @@
     <h1>Home</h1>
     
 
-    <div class="changeImg" v-if="logoUrl" @click="OpenFileSelect()">
-       <img :src='logoUrl' >
+    <div class="changeImg" v-if="user.logoUrl" @click="OpenFileSelect()">
+       <img :src='user.logoUrl' >
        <p>click to change photo</p>
     </div>
 
@@ -37,7 +37,7 @@ export default {
   },
   props: {
     msg: String,
-    logoUrl: String
+    user: Object
   },
   methods: {
     OpenFileSelect() {
@@ -62,7 +62,11 @@ export default {
       })
         .then(response => {
           console.log(response.data.logoUrl);
-          this.$emit('login', {loginName:response.data.login, logo:response.data.logoUrl} )
+          let user={
+                        login:response.data.login,
+                        logoUrl:'http://localhost:5000/'+response.data.logoUrl
+                    }
+          this.$emit('login', user);
           this.errorMsg='';
           console.log("file downloaded");
         })

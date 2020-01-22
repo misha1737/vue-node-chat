@@ -4,8 +4,7 @@
 <template>
   <div>
       <header>
-          
-            <div class="container" v-if="user">
+            <div class="container" v-if="auth">
                 <div class="hamburger" :class="{active: openMenu}" @click="openMenu=!openMenu"><img src="../assets/menu.svg" alt=""></div>
                     <ul class="topMenu" :class="{active: openMenu}">
                         <router-link tag="li" class="nav-item" exact to="/home" active-class="active" >
@@ -22,9 +21,9 @@
                         </router-link>   
                          <div class="userHeaderBlock">  
                             <p class="signOut" @click='signOut(), menu()'>Sign out</p>
-                            <p class="loginName">{{login}}</p>
-                            <div class="loginImg"><img  src="../assets/user.svg" alt=""></div>
-                            
+                            <p class="loginName">{{user.login}}</p>
+                            <div class="loginImg" v-if="!user.logoUrl"><img  src="../assets/user.svg" alt=""></div>
+                            <div class="userImg" v-else><img  :src="user.logoUrl" alt=""></div>
                          </div>    
                     </ul>
                    
@@ -48,9 +47,8 @@ import axios from 'axios'
             }
         },
         props:{
-            login:String,
-            user:Boolean,
-            logoUrl:String
+            user:Object, 
+            auth:Boolean
         },
         methods: {
             signOut(){
@@ -62,7 +60,7 @@ import axios from 'axios'
                     }).then(response => {
                        
                         if(response.status==200){
-                            this.$emit('logout', this.regLogin )    
+                            this.$emit('logout', this.user)    
                         }
                       
                     })

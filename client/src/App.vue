@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
-    <div >
-    <Header :login='login' :logoUrl='logoUrl'  :user='user' @logout='logout'></Header>
-    <authorization class="pageContent" @login='Login'  v-if='!user'></authorization>  
-    <router-view class="pageContent" :login='login'  @login='Login' :logoUrl='logoUrl' v-if='user'></router-view>
+  <div id="app" >
+    <div>
+    <Header :auth='auth' :user='user' @logout='logout'></Header>
+    <authorization class="pageContent" @login='Login' :user='user' v-if='!auth'></authorization>  
+    <router-view class="pageContent" :user='user'  @login='Login'  v-if='auth'></router-view>
     </div>
   </div>
 </template>
@@ -18,9 +18,8 @@ export default {
   name: 'app',
    data(){
             return{
-              login:'',
-              user:false,
-              logoUrl:''
+              user:{},
+              auth:false
             }
         },
   components: {
@@ -29,16 +28,12 @@ export default {
   },
   methods:{
     Login(user){
-      this.login=user.loginName;
-      this.user=true;
-       if(user.logo){
-                      this.logoUrl='http://localhost:5000/'+user.logo;
-                       }
+      this.auth=true;
+      this.user=user;
     },
     logout(){
-      this.login='';
-      this.user=false;
-      this.logoUrl='';
+      this.auth=false;
+      this.user=null;
     }
   },
    beforeCreate(){
@@ -49,10 +44,10 @@ export default {
                     withCredentials: true
                     }).then(response => {
                        console.log(response.data.login);
-                       this.login=response.data.login;
-                       this.user=true;
+                       this.user.login=response.data.login;
+                       this.auth=true;
                        if(response.data.logoUrl){
-                      this.logoUrl='http://localhost:5000/'+response.data.logoUrl;
+                      this.user.logoUrl='http://localhost:5000/'+response.data.logoUrl;
                        }
                     })    
         } 

@@ -7,7 +7,7 @@
         <div class="chat">
           <ul id="all_messages" class="chatContent scroll"  ref="chat" @scroll="onScroll">
            
-            <li  :class="{ownMessage: message.user==login}" v-for="message in chatHistory" :key="message.id">
+            <li  :class="{ownMessage: message.user==user.login}" v-for="message in chatHistory" :key="message.id">
                <div class="chatMessage" >
                 <p class='messageUser' >{{message.user}}</p> <span class="message">{{message.msg}} </span> <span class="messageTime"> {{message.time}}</span>
                 </div>
@@ -42,7 +42,7 @@ export default {
   name: 'ChatPage',
   props: {
     msg: String,
-    login: String,
+    user: Object,
   },
   data(){
       return{
@@ -86,7 +86,7 @@ export default {
             });
           });
           this.socket.on('loadHistory', data=>{
-              if (data.login==this.login){
+              if (data.login==this.user.login){
             if (data.history.length>0){
 
               for(var i=0; i<data.history.length; i++) {
@@ -150,7 +150,7 @@ export default {
     },
     async created(){
       this.listen();    
-      this.socket.emit('user', this.login);
+      this.socket.emit('user', this.user.login);
       
       
     },

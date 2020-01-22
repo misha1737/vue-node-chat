@@ -85,7 +85,13 @@ export default {
                     }
                     }).then(response => {
                     console.log(response);
-                    this.$emit('login', {loginName:response.data.login, logo:response.data.logoUrl});
+                    let user={
+                        login:response.data.login,
+                    }
+                    if(response.data.logoUrl){
+                       user.logoUrl='http://localhost:5000/'+response.data.logoUrl;
+                    }
+                    this.$emit('login', user);
                 })
                 .catch(error => {
                 console.log(error.response.data);
@@ -116,7 +122,13 @@ export default {
 
                     .then(response => {
                         console.log(response);
-                       this.$emit('login', {loginName:response.data.login, logo:response.data.logoUrl} )
+                        let user={
+                        login:response.data.login,
+                        }
+                        if(response.data.logoUrl){
+                       user.logoUrl='http://localhost:5000/'+response.data.logoUrl;
+                          }
+                       this.$emit('login', user )
                     })
                     .catch(error => {
                     console.log(error.response.data);
