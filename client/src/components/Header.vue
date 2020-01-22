@@ -23,8 +23,6 @@
                          <div class="userHeaderBlock">  
                             <p class="signOut" @click='signOut(), menu()'>Sign out</p>
                             <p class="loginName">{{login}}</p>
-                            <div class="loginImg"><img  src="../assets/user.svg" alt=""></div>
-                            
                          </div>    
                     </ul>
                    
@@ -49,8 +47,7 @@ import axios from 'axios'
         },
         props:{
             login:String,
-            user:Boolean,
-            logoUrl:String
+            user:Boolean
         },
         methods: {
             signOut(){

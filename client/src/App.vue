@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div >
-    <Header :login='login' :logoUrl='logoUrl'  :user='user' @logout='logout'></Header>
-    <authorization class="pageContent" @login='Login'  v-if='!user'></authorization>  
-    <router-view class="pageContent" :login='login' :logoUrl='logoUrl' v-if='user'></router-view>
+    <Header :login='login' :user='user' @logout='logout'></Header>
+    <authorization class="pageContent" @login='Login' v-if='!user'></authorization>  
+    <router-view class="pageContent" :login='login' v-if='user'></router-view>
     </div>
   </div>
 </template>
@@ -19,8 +19,7 @@ export default {
    data(){
             return{
               login:'',
-              user:false,
-              logoUrl:''
+              user:false
             }
         },
   components: {
@@ -47,10 +46,10 @@ export default {
                        console.log(response.data.login);
                        this.login=response.data.login;
                        this.user=true;
-                       if(response.data.logoUrl){
-                      this.logoUrl='http://localhost:5000/'+response.data.logoUrl;
-                       }
-                    })    
+                      
+                    })
+                    
+                   
         } 
         
 }

@@ -36,7 +36,13 @@ app.post("/authorization", routes.authorization);
 app.post("/registration", routes.registration);
 app.post("/uploadImg", routes.uploadImg);
 app.get("/logout", routes.logout);
-app.get("/", routes.getUser); 
+app.get("/", function(req, res) {
+  if (req.session.userLogin) {
+    res.status(200).send({ login: req.session.userLogin });
+  } else {
+    res.status(401).send("access error");
+  }
+});
 
 // app.use((req, res, next) => {
 //   const err = new Error("Not Found");
