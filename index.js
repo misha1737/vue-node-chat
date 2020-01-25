@@ -38,11 +38,6 @@ app.post("/uploadImg", routes.uploadImg);
 app.get("/logout", routes.logout);
 app.get("/", routes.getUser); 
 
-// app.use((req, res, next) => {
-//   const err = new Error("Not Found");
-//   err.status = 404;
-//   res.send("error 404");
-// });
 
 //chat
 require("./libs/chat")(io);

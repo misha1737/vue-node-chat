@@ -2,8 +2,6 @@
 <template>
       <div class="container">
         <h1>Chat</h1>
-    
-        
         <div class="chat">
           <ul id="all_messages" class="chatContent scroll"  ref="chat" @scroll="onScroll">
            

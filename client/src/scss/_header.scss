@@ -26,8 +26,9 @@ header{
                 &:hover{
                     color:#fff5;
                   }
-           
+          
         }
+        
     }
     .loginImg{
         float: right;
@@ -142,16 +143,22 @@ header{
             z-index: 45;
             opacity: 0;
             .nav-item{
-               margin-top: 40px;
+               margin-top: 30px;
                a{
                    font-size: 24px;
             }
+            &:first-child{
+                margin-top: 80px;
+            }
+
           
         }
         .userHeaderBlock{
+            z-index:0;
             width:100%;
             .loginName{
                 float:none;
+                display:inline-block;
                 margin-left:15px;
                 max-width:auto;
                 text-align: left;

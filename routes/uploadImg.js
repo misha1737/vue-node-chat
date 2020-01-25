@@ -5,7 +5,7 @@ var multer = require("multer");
 var fs = require("fs");
 var dirname = "undefined";
 var User = require("../models/user.js").User;
-
+var cropImage = require("../libs/crop-image");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
@@ -58,7 +58,7 @@ router.post("/uploadImg", function(req, res, next) {
         
       }
     } else {
-     console.log(req.file)
+
 
      User.findOne({'login':req.session.userLogin}).then(user => {
       if (user.logoUrl) {
@@ -70,18 +70,27 @@ router.post("/uploadImg", function(req, res, next) {
             console.log('file deleted');
            
           });
-          //
-      user.update({ logoUrl:  dirname+"/"+req.file.filename },  function(err){
-        console.log(err)
+     
+          new Promise( function (resolve) {
+           //обрезка и запись в базу (login,url,coordinates,user)
+          
+            resolve( cropImage(req.session.userLogin, dirname+"/"+req.file.filename, req.body.coordinates, user));
+        }).then(response => {
+          res.send(response);
         });
-        res.send({ login: req.session.userLogin, logoUrl:dirname+"/"+req.file.filename });  
-        
       }else{
+
         console.log('image no');
-        user.update({ logoUrl:  dirname+"/"+req.file.filename },  function(err){
-          console.log(err)
-          });
-        res.send({ login: req.session.userLogin, logoUrl:dirname+"/"+req.file.filename });
+        //обрезка и запись в базу (login,url,coordinates,user)
+     
+        new Promise(function (resolve) {
+          //обрезка и запись в базу (login,url,coordinates,user)
+          resolve(cropImage(req.session.userLogin, dirname+"/"+req.file.filename, req.body.coordinates, user));
+       }).then(response => {
+         res.send(response);
+       });
+
+
       }
      });
 
