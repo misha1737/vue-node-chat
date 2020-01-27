@@ -2,10 +2,14 @@
 <template>
       <div class="container">
         <h1>Chat</h1>
+        {{usersLogo}}
         <div class="chat">
           <ul id="all_messages" class="chatContent scroll"  ref="chat" @scroll="onScroll">
-           
-            <li  :class="{ownMessage: message.user==user.login}" v-for="message in chatHistory" :key="message.id">
+            <li :class="{ownMessage: message.user==user.login}" v-for="message in chatHistory" :key="message.id">
+                <div class="loginImgBlock">
+                <div class="loginImg" v-if="true"><img  src="../assets/user.svg" alt=""></div>
+                <div class="userImg" v-else><img  :src="user.logoUrl" alt=""></div>
+                </div>
                <div class="chatMessage" >
                 <p class='messageUser' >{{message.user}}</p> <span class="message">{{message.msg}} </span> <span class="messageTime"> {{message.time}}</span>
                 </div>
@@ -22,11 +26,7 @@
                   </li>
            </div>  
          </div> 
-            
-      
-      
-      
-
+          
     </div>
 </template>
 
@@ -52,7 +52,8 @@ export default {
             historyPage: 0,
             pauseToLoad: false,
             chatHeight: 0,
-            userOnline: []
+            userOnline: [],
+            usersLogo: []
             }
     },
     sockets: {
@@ -64,16 +65,22 @@ export default {
         }
     },
     methods: {
+   
         clickButton() {
             this.socket.emit('send mess', this.textMessage)
             this.textMessage='';
         },
           getHistory(){
-            
                 this.socket.emit('getHistory', this.historyPage)
-         
                     this.historyPage++;
    
+        },
+        getUsersLogo(name,url){
+            if(this.usersLogo.find(el => el.name === name)){
+              return
+            }else{
+              this.usersLogo.push({name:name});
+            }
         },
         listen(){
           this.socket.on('add mess', data=>{            
@@ -93,7 +100,10 @@ export default {
                   message.user= data.history[i].login;
                   message.msg= data.history[i].message;
                   this.chatHistory.unshift(message);
+                  this.getUsersLogo(message.user,'someurl'); //собрать масив с логинами истории чата
+                  
                }
+               this.socket.emit('getLoginUrl', this.usersLogo);
                 this.$nextTick(() => {
                         if(this.chatHeight==0){
                          this.chatHeight=this.$refs.chat.scrollHeight;
@@ -107,13 +117,27 @@ export default {
               }
           });
            this.socket.on('loadUsers', data=>{
-              
-
               this.userOnline = data.filter(function(item, pos) {
               return data.indexOf(item) == pos;
               })
-           
+              
+           });
+
+           this.socket.on('loadLogoUrl', data=>{
+              // this.userOnline = data.filter(function(item, pos) {
+              // return data.indexOf(item) == pos;
+              // })
+              console.log(data);
+              this.usersLogo=[];
+              for(let i=0;i<data.length;i++){
+               this.usersLogo.push({
+                 name: data[i].name,
+                 logoUrl:data[i].logoUrl,
+                 })
+                console.log(this.chatHistory);
+              }
            })
+
             this.socket.on('error', data=>{
               console.log(data)
             });
@@ -149,8 +173,6 @@ export default {
     async created(){
       this.listen();    
       this.socket.emit('user', this.user.login);
-      
-      
     },
     mounted(){
       this.getHistory();

@@ -21,12 +21,68 @@
         overflow-y: scroll;
         margin: 0px;
         li{
+            display: flex;
+            align-items: flex-end;
             width: 100%;
+            .loginImgBlock{
+                //display: inline-block;
+                box-shadow: 0 0 5px rgba(0,0,0,0.3);
+                border-radius: 50%;
+                width: 32px;
+                height: 32px;
+                margin-left: 10px;
+                margin-bottom: 5px;
+
+                .loginImg{
+                    //float: left;
+                    width: 22px;
+                    height: 22px;
+                    background: white;
+                    border-radius: 50%;
+                    padding: 5px;
+                    img{
+                        opacity:0.5;
+                    }
+                }
+                    .userImg{
+                    float: right;
+                    width: 22px;
+                    height: 22px;
+                    background: white;
+                    border-radius: 50%;
+                    padding: 5px;
+                    margin-top: 4px;
+                    position: relative;
+                    overflow: hidden;
+                    img{
+                        opacity:1;
+                        width: auto;
+                        height: auto;
+                        max-width:100%;
+                        max-height:100%;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                    }    
+                }
+            }
             &.ownMessage{
                 text-align: right;
+                flex-direction: row-reverse;
+                .loginImgBlock{
+                    margin:0;
+                    margin-right: 10px;
+                    margin-top: 5px;
+                }
                 .chatMessage {
-               
                 border-radius: 10px 10px 0px 10px;
+                .messageUser{
+                    text-align: right;
+                    display:none;
+                }
                     &:before{
                         left:auto;
                         right:-15px;
@@ -52,8 +108,10 @@
                 padding:5px 20px;
                 border-radius: 10px 10px 10px 0px;
                // margin-right: 20px;
+               max-width: calc(100% - 120px);
                 
-                  
+            
+              
                             .messageUser{
                                 margin:0px;
                                 font-weight: bold;
@@ -69,6 +127,7 @@
                                 opacity: 0.7;
                                 margin-left: 20px;
                             }
+                        
                
                 &:before{
                     content:' ';

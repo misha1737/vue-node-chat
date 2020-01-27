@@ -1,5 +1,6 @@
 chat = function(io) {
   var Message = require("../models/message.js").Message;
+  var User = require("../models/user.js").User; 
   function spam() {
     letSpamcounter--;
     console.log(letSpamcounter);
@@ -106,6 +107,7 @@ chat = function(io) {
           if (!history) {
             console.log("errHisstory");
           } else {
+           
             io.sockets.emit("loadHistory", {
               history: history,
               login: userName
@@ -113,6 +115,38 @@ chat = function(io) {
           }
         });
     });
+    socket.on("getLoginUrl", function(data) {
+      
+      let namemas=[];
+      for(let i=0; i < data.length; i++){
+        namemas.push(data[i].name);
+      }
+
+      console.log(namemas);
+      User.find({login:{ $in:  namemas } }).then(
+        result =>{
+          if (!result) {
+            console.log("errUserlogin");
+        }else{
+         let data= []
+         
+         for(let i=0; i < result.length; i++){
+           data.push({
+             name:result[i].login,
+             logoUrl:result[i].logoUrl
+            })
+        }
+        
+          io.sockets.emit("loadLogoUrl", data);
+        }
+
+        }
+      )
+
+     
+
+    });
+
   });
 };
 
