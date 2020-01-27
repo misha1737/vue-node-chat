@@ -101,9 +101,9 @@ export default {
                   message.msg= data.history[i].message;
                   this.chatHistory.unshift(message);
                   this.getUsersLogo(message.user,'someurl'); //собрать масив с логинами истории чата
-                  
                }
                this.socket.emit('getLoginUrl', this.usersLogo);
+                
                 this.$nextTick(() => {
                         if(this.chatHeight==0){
                          this.chatHeight=this.$refs.chat.scrollHeight;
@@ -134,7 +134,10 @@ export default {
                  name: data[i].name,
                  logoUrl:data[i].logoUrl,
                  })
+
                 console.log(this.chatHistory);
+
+
               }
            })
 
