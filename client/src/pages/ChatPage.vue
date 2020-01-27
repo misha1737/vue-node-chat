@@ -3,12 +3,14 @@
       <div class="container">
         <h1>Chat</h1>
         {{usersLogo}}
+        <p></p>
+        {{chatHistory}}
         <div class="chat">
           <ul id="all_messages" class="chatContent scroll"  ref="chat" @scroll="onScroll">
             <li :class="{ownMessage: message.user==user.login}" v-for="message in chatHistory" :key="message.id">
                 <div class="loginImgBlock">
-                <div class="loginImg" v-if="true"><img  src="../assets/user.svg" alt=""></div>
-                <div class="userImg" v-else><img  :src="user.logoUrl" alt=""></div>
+                <div class="loginImg" v-if="!message.logoUrl"><img  src="../assets/user.svg" alt=""></div>
+                <div class="userImg" v-else><img  :src="'http://localhost:5000/'+message.logoUrl" alt=""></div>
                 </div>
                <div class="chatMessage" >
                 <p class='messageUser' >{{message.user}}</p> <span class="message">{{message.msg}} </span> <span class="messageTime"> {{message.time}}</span>
@@ -53,7 +55,9 @@ export default {
             pauseToLoad: false,
             chatHeight: 0,
             userOnline: [],
-            usersLogo: []
+            usersLogo: [],
+            Tstart:0,
+            Tend:0
             }
     },
     sockets: {
@@ -71,6 +75,7 @@ export default {
             this.textMessage='';
         },
           getHistory(){
+            this.Tstart=Date.now();
                 this.socket.emit('getHistory', this.historyPage)
                     this.historyPage++;
    
@@ -127,18 +132,33 @@ export default {
               // this.userOnline = data.filter(function(item, pos) {
               // return data.indexOf(item) == pos;
               // })
-              console.log(data);
+             
               this.usersLogo=[];
               for(let i=0;i<data.length;i++){
                this.usersLogo.push({
                  name: data[i].name,
                  logoUrl:data[i].logoUrl,
                  })
-
-                console.log(this.chatHistory);
-
-
+                //добавления в сообщения логотипов
+               
               }
+              //console.log("+");
+                for(let i in this.usersLogo){
+                    console.log(this.usersLogo[i].name)
+                    for(let j in this.chatHistory){
+                        if (this.chatHistory[j].user==this.usersLogo[i].name){
+                            this.chatHistory[j].logoUrl=this.usersLogo[i].logoUrl;
+                        }
+
+                    }
+
+                }
+              this.Tend=Date.now();
+              console.log(this.Tstart);
+              console.log(this.Tend);
+
+              console.log(this.Tend-this.Tstart+'ms')
+
            })
 
             this.socket.on('error', data=>{
@@ -176,9 +196,10 @@ export default {
     async created(){
       this.listen();    
       this.socket.emit('user', this.user.login);
+      this.getHistory();
     },
     mounted(){
-      this.getHistory();
+      
     }
    
 }
