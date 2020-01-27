@@ -2,14 +2,16 @@
 <template>
       <div class="container">
         <h1>Chat</h1>
+        <p style="display:none">
         {{usersLogo}}
-        <p></p>
-        {{chatHistory}}
+        </p>
+      
         <div class="chat">
           <ul id="all_messages" class="chatContent scroll"  ref="chat" @scroll="onScroll">
             <li :class="{ownMessage: message.user==user.login}" v-for="message in chatHistory" :key="message.id">
                 <div class="loginImgBlock">
                 <div class="loginImg" v-if="!message.logoUrl"><img  src="../assets/user.svg" alt=""></div>
+                <div class="userImg" v-else-if="message.user==user.login"><img  :src="user.logoUrl" alt=""></div>
                 <div class="userImg" v-else><img  :src="'http://localhost:5000/'+message.logoUrl" alt=""></div>
                 </div>
                <div class="chatMessage" >
@@ -90,6 +92,7 @@ export default {
         listen(){
           this.socket.on('add mess', data=>{            
             data.time=this.timedecode(data.time );
+            data.logoUrl=this.user.logoUrl;
             this.chatHistory.push(data);
             this.$nextTick(() => {
             this.$refs.chat.scrollTop= this.$refs.chat.scrollHeight+20000;
