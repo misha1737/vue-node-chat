@@ -5,7 +5,6 @@
         <p style="display:none">
         {{usersLogo}}
         </p>
-      
         <div class="chat">
           <ul id="all_messages" class="chatContent scroll"  ref="chat" @scroll="onScroll">
             <li :class="{ownMessage: message.user==user.login}" v-for="message in chatHistory" :key="message.id">
@@ -15,16 +14,18 @@
                 <div class="userImg" v-else><img  :src="'http://localhost:5000/'+message.logoUrl" alt=""></div>
                 </div>
                <div class="chatMessage" >
-                <p class='messageUser' >{{message.user}}</p> <span class="message">{{message.msg}} </span> <span class="messageTime"> {{message.time}}</span>
+                <p class='messageUser' >{{message.user}}</p> <pre class="message">{{message.msg}}</pre> <span class="messageTime"> {{message.time}}</span>
                 </div>
             </li>
+            
           </ul>
-          <div id="messForm" class="messageForm" v-on:keyup.enter="clickButton()">
+          <div class="chatStatus"><div v-if='chatStatus.length>0'><span  v-for="user in chatStatus" :key="user.id">{{user}} </span> <span>writes a message...</span></div></div>
+          <div id="messForm" class="messageForm" @keydown="clickButton" @keyup="shiftOff">
                   <textarea  type="text" v-model="textMessage" class="form-control scroll" id="message" aria-describedby="messageHelp" placeholder="Enter Message" resize: none required></textarea>
                 <button type="button" @click="clickButton()" class="btn sendMessage">Send</button>   
           </div>
             <div class="userOnline">
-              <h2>online</h2>
+              <h2>users online</h2>
                   <li v-for="login in userOnline" :key="login.id">
                     {{login}}
                   </li>
@@ -59,7 +60,9 @@ export default {
             userOnline: [],
             usersLogo: [],
             Tstart:0,
-            Tend:0
+            Tend:0,
+            keyShift:false,
+            chatStatus: []
             }
     },
     sockets: {
@@ -71,10 +74,27 @@ export default {
         }
     },
     methods: {
-   
-        clickButton() {
-            this.socket.emit('send mess', this.textMessage)
+        shiftOff(event){
+          if(event.key=='Shift'){
+             this.keyShift=false;
+          } 
+        },
+        clickButton(event) {
+
+            //добавить функцию печатает сообщения
+              this.socket.emit('writeMessage', this.user);
+
+          if(event.key=='Shift'){
+             this.keyShift=true;
+          }
+          if(event.key=='Enter' && !this.keyShift){
+            if(this.textMessage.length>1){
+            this.socket.emit('send mess', this.textMessage);
             this.textMessage='';
+            }else{
+              this.textMessage='';
+            }
+          }
         },
           getHistory(){
             this.Tstart=Date.now();
@@ -132,10 +152,7 @@ export default {
            });
 
            this.socket.on('loadLogoUrl', data=>{
-              // this.userOnline = data.filter(function(item, pos) {
-              // return data.indexOf(item) == pos;
-              // })
-             
+   
               this.usersLogo=[];
               for(let i=0;i<data.length;i++){
                this.usersLogo.push({
@@ -147,7 +164,7 @@ export default {
               }
               //console.log("+");
                 for(let i in this.usersLogo){
-                    console.log(this.usersLogo[i].name)
+                  
                     for(let j in this.chatHistory){
                         if (this.chatHistory[j].user==this.usersLogo[i].name){
                             this.chatHistory[j].logoUrl=this.usersLogo[i].logoUrl;
@@ -157,13 +174,25 @@ export default {
 
                 }
               this.Tend=Date.now();
-              console.log(this.Tstart);
-              console.log(this.Tend);
-
-              console.log(this.Tend-this.Tstart+'ms')
+              console.log('loadHistory='+(this.Tend-this.Tstart)+'ms')
 
            })
-
+           this.socket.on('writingUser', data=>{
+              //пишет
+              console.log(data);
+              let find=false;
+              for(let i in this.chatStatus){
+                if (this.chatStatus[i]==data){
+                  find=true;
+                }
+              }
+              if(!find){
+              this.chatStatus.push(data);
+   
+               setTimeout(() =>this.chatStatus.shift(), 2000);
+              }
+           })
+        
             this.socket.on('error', data=>{
               console.log(data)
             });

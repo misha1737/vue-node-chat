@@ -146,6 +146,12 @@ chat = function(io) {
      
 
     });
+    socket.on("writeMessage", function(data) {
+        
+        io.sockets.emit("writingUser", data.login);
+    });
+    
+
 
   });
 };
