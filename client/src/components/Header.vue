@@ -13,7 +13,7 @@
                         <router-link tag="li"  class="nav-item" exact to="/chat"  >
                             <a class="nav-link" @click="menu()">Chat</a>
                         </router-link>
-                        <router-link tag="li"  class="nav-item" exact to="/"  >
+                        <router-link tag="li"  class="nav-item" exact to="/todo"  >
                             <a class="nav-link" @click="menu()">ToDoList</a>
                         </router-link>
                         <router-link tag="li"  class="nav-item" exact to="/"  >
@@ -38,7 +38,6 @@
 
 import axios from 'axios'
 
-
     export default {
         name: "Header.vue",
           data(){
@@ -52,6 +51,14 @@ import axios from 'axios'
         },
         methods: {
             signOut(){
+                    
+
+                // function deleteCookie(name) {
+                // setCookie(name, "", {
+                //     'max-age': -1
+                // })
+                // }
+
                  axios({
                     method: 'get',
                     url: 'http://localhost:5000/logout',

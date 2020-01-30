@@ -21,7 +21,7 @@
           </ul>
           <div class="chatStatus"><div v-if='chatStatus.length>0'><span  v-for="user in chatStatus" :key="user.id">{{user}} </span> <span>writes a message...</span></div></div>
           <div id="messForm" class="messageForm" @keydown="clickButton" @keyup="shiftOff">
-                  <textarea  type="text" v-model="textMessage" class="form-control scroll" id="message" aria-describedby="messageHelp" placeholder="Enter Message" resize: none required></textarea>
+                  <textarea  ref="textarea" type="text" v-model="textMessage" class="form-control scroll" id="message" aria-describedby="messageHelp" placeholder="Enter Message" resize: none required></textarea>
                 <button type="button" @click="clickButton()" class="btn sendMessage">Send</button>   
           </div>
             <div class="userOnline">
@@ -31,7 +31,7 @@
                   </li>
            </div>  
          </div> 
-          
+          <button @click="disconect">disconect</button>
     </div>
 </template>
 
@@ -40,6 +40,7 @@
 import Vue from 'vue'
 
 import io from "socket.io-client"
+
 
 export default {
   name: 'ChatPage',
@@ -74,13 +75,21 @@ export default {
         }
     },
     methods: {
+      disconect(){
+        console.log(this.$cookie.get('io'));
+        
+       // this.socket.emit('disconnect');
+      },
         shiftOff(event){
           if(event.key=='Shift'){
              this.keyShift=false;
           } 
         },
         clickButton(event) {
-
+          if(this.$refs.textarea.value.charCodeAt(0)==10){
+            this.$refs.textarea.value=null;
+          }
+            this.textMessage.slice(0, -1);
             //добавить функцию печатает сообщения
               this.socket.emit('writeMessage', this.user);
 
@@ -89,17 +98,20 @@ export default {
           }
           if(event.key=='Enter' && !this.keyShift){
             if(this.textMessage.length>1){
+              console.log(this.textMessage.charCodeAt(0));
             this.socket.emit('send mess', this.textMessage);
             this.textMessage='';
             }else{
+              
               this.textMessage='';
+              this.$refs.textarea.value=null;
             }
           }
         },
           getHistory(){
             this.Tstart=Date.now();
                 this.socket.emit('getHistory', this.historyPage)
-                    this.historyPage++;
+              this.historyPage++;
    
         },
         getUsersLogo(name,url){
@@ -110,9 +122,10 @@ export default {
             }
         },
         listen(){
-          this.socket.on('add mess', data=>{            
+          this.socket.on('add mess', data=>{   
+            console.log('test:')         
             data.time=this.timedecode(data.time );
-            data.logoUrl=this.user.logoUrl;
+            //data.logoUrl=data.logoUrl;
             this.chatHistory.push(data);
             this.$nextTick(() => {
             this.$refs.chat.scrollTop= this.$refs.chat.scrollHeight+20000;

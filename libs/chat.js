@@ -18,7 +18,7 @@ chat = function(io) {
 
     socket.on("disconnect", function(data) {
       connections.splice(connections.indexOf(socket), 1);
-
+        console.log("123")
       let pos = users.indexOf(userName);
       if (pos > -1) {
         users.splice(pos, 1);
@@ -73,11 +73,18 @@ chat = function(io) {
           }
         });
 
+        
+        User.findOne({login:userName}).then(userData => {
+          console.log("this-")
+          console.log(userData.logoUrl);
+        
         io.sockets.emit("add mess", {
           user: userName,
           msg: data,
+          logoUrl: userData.logoUrl,
           time: Date.now()
         });
+        })
       } else {
       }
 
@@ -118,7 +125,7 @@ chat = function(io) {
     socket.on("getLoginUrl", function(data) {
       
       let namemas=[];
-      for(let i=0; i < data.length; i++){
+      for(let i in data){
         namemas.push(data[i].name);
       }
 

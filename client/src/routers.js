@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router'
 import Home from './pages/Home'
- import ChatPage from './pages/ChatPage'
-// import ErrorCmp from './pages/Error'
+import ChatPage from './pages/ChatPage'
+import ToDo from './pages/ToDo'
 // import Cart from './pages/Cart'
 // import Catalog from './pages/Catalog'
 // import Registration from './pages/Registration'
@@ -19,10 +19,10 @@ export default new VueRouter({
             path: '/chat', //home page
             component: ChatPage
         },
-        // {
-        //     path: '/cart', //home page
-        //     component: Cart
-        // },
+         {
+             path: '/todo', //home page
+             component: ToDo
+         },
         // {
         //     path: '/catalog', //home page
         //     component: Catalog
