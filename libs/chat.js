@@ -17,6 +17,7 @@ chat = function(io) {
     console.log("Успешное соединение");
 
     socket.on("disconnect", function(data) {
+      console.log("3333")
       connections.splice(connections.indexOf(socket), 1);
         console.log("123")
       let pos = users.indexOf(userName);
@@ -34,11 +35,11 @@ chat = function(io) {
         io.sockets.emit("error", { err });
       }
       //валидация
-      if (data.length < 1) {
+      if (data.text.length < 1) {
         sendError("message is empty");
         return 0;
       }
-      if (data.length > 1024) {
+      if (data.text.length > 1024) {
         sendError("message is too big");
         return 0;
       }
@@ -51,19 +52,27 @@ chat = function(io) {
         }, 60000);
         console.log(mute);
       }
+      console.log(socket.id);
+      if (!userName){
+        userName=data.login;
+        users.push(userName);
+        console.log("підключився:" + data);
+        users.push(userName);
+        io.sockets.emit("loadUsers", users);
+      }
       if (!mute) {
         let time = Date.now();
         var message = new Message({
           login: userName,
-          message: data,
+          message: data.text,
           time: time
         });
-
+        
         message.save(function(err, message, affected) {
           if (err) {
             console.log(err);
           } else {
-            console.log("new Message");
+            
             letSpamcounter++;
 
             setTimeout(spam, 10000);
@@ -75,12 +84,11 @@ chat = function(io) {
 
         
         User.findOne({login:userName}).then(userData => {
-          console.log("this-")
-          console.log(userData.logoUrl);
+ 
         
         io.sockets.emit("add mess", {
           user: userName,
-          msg: data,
+          msg: data.text,
           logoUrl: userData.logoUrl,
           time: Date.now()
         });
@@ -129,7 +137,7 @@ chat = function(io) {
         namemas.push(data[i].name);
       }
 
-      console.log(namemas);
+    
       User.find({login:{ $in:  namemas } }).then(
         result =>{
           if (!result) {

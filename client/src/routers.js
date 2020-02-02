@@ -12,7 +12,7 @@ import ToDo from './pages/ToDo'
 export default new VueRouter({
     routes:[
         {
-            path: '/home', //home page
+            path: '/', //home page
             component: Home
         },
         {

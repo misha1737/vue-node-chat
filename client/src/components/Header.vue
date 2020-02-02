@@ -7,7 +7,7 @@
             <div class="container" v-if="auth">
                 <div class="hamburger" :class="{active: openMenu}" @click="openMenu=!openMenu"><img src="../assets/menu.svg" alt=""></div>
                     <ul class="topMenu" :class="{active: openMenu}">
-                        <router-link tag="li" class="nav-item" exact to="/home" active-class="active" >
+                        <router-link tag="li" class="nav-item" exact to="/" active-class="active" >
                         <a class="nav-link"  @click="menu()">Home</a>
                         </router-link>
                         <router-link tag="li"  class="nav-item" exact to="/chat"  >

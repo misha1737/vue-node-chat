@@ -12,14 +12,15 @@
 import axios from 'axios'
 import Header from './components/Header.vue'
 import authorization from './components/Auth.vue'
-
+import io from "socket.io-client"
 
 export default {
   name: 'app',
    data(){
             return{
               user:{},
-              auth:false
+              auth:false,
+              socket: io("http://localhost:5000")
             }
         },
   components: {
@@ -34,6 +35,7 @@ export default {
     logout(){
       this.auth=false;
       this.user=null;
+      this.socket.disconnect();
     }
   },
    beforeCreate(){

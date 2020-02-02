@@ -22,7 +22,7 @@
           <div class="chatStatus"><div v-if='chatStatus.length>0'><span  v-for="user in chatStatus" :key="user.id">{{user}} </span> <span>writes a message...</span></div></div>
           <div id="messForm" class="messageForm" @keydown="clickButton" @keyup="shiftOff">
                   <textarea  ref="textarea" type="text" v-model="textMessage" class="form-control scroll" id="message" aria-describedby="messageHelp" placeholder="Enter Message" resize: none required></textarea>
-                <button type="button" @click="clickButton()" class="btn sendMessage">Send</button>   
+                <button type="button" @click="sendMessage()" class="btn sendMessage">Send</button>   
           </div>
             <div class="userOnline">
               <h2>users online</h2>
@@ -32,6 +32,7 @@
            </div>  
          </div> 
           <button @click="disconect">disconect</button>
+          <button @click="connect">conect</button>
     </div>
 </template>
 
@@ -76,10 +77,26 @@ export default {
     },
     methods: {
       disconect(){
-        console.log(this.$cookie.get('io'));
-        
+        //console.log(this.$cookie.get('io'));
+        this.socket.disconnect();
        // this.socket.emit('disconnect');
+      // this.user=[]
       },
+      connect(){
+        if(!this.socket){
+          console.log('false soket')
+        }else{
+            console.log('true soket')
+        }
+          this.socket.connect('111');
+          console.log(this.socket)
+      },
+      sendMessage(){
+            if(this.textMessage.length>1){
+            this.socket.emit('send mess', {text: this.textMessage, login: this.user.login});
+            this.textMessage='';
+            }
+        },
         shiftOff(event){
           if(event.key=='Shift'){
              this.keyShift=false;
@@ -99,7 +116,7 @@ export default {
           if(event.key=='Enter' && !this.keyShift){
             if(this.textMessage.length>1){
               console.log(this.textMessage.charCodeAt(0));
-            this.socket.emit('send mess', this.textMessage);
+            this.socket.emit('send mess', {text: this.textMessage, login: this.user.login});
             this.textMessage='';
             }else{
               
@@ -146,14 +163,17 @@ export default {
                this.socket.emit('getLoginUrl', this.usersLogo);
                 
                 this.$nextTick(() => {
+                  if(this.$refs.chat){
                         if(this.chatHeight==0){
                          this.chatHeight=this.$refs.chat.scrollHeight;
                          this.$refs.chat.scrollTop= 50000;
                         }else{
                         this.$refs.chat.scrollTop= 600;
                         }
-                   
+                  }
                       })
+
+
             }
               }
           });
@@ -205,7 +225,7 @@ export default {
                setTimeout(() =>this.chatStatus.shift(), 2000);
               }
            })
-        
+         
             this.socket.on('error', data=>{
               console.log(data)
             });
