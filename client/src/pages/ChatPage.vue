@@ -31,15 +31,13 @@
                   </li>
            </div>  
          </div> 
-          <button @click="disconect">disconect</button>
-          <button @click="connect">conect</button>
+   
     </div>
 </template>
 
 
 <script>
 import Vue from 'vue'
-
 import io from "socket.io-client"
 
 
@@ -76,12 +74,7 @@ export default {
         }
     },
     methods: {
-      disconect(){
-        //console.log(this.$cookie.get('io'));
-        this.socket.disconnect();
-       // this.socket.emit('disconnect');
-      // this.user=[]
-      },
+
       connect(){
         if(!this.socket){
           console.log('false soket')

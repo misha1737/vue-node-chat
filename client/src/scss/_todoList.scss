@@ -1,0 +1,72 @@
+.toDo {
+  .addTask {
+  }
+  .list {
+    width: 75%;
+    background-color: white;
+    padding: 10px;
+    line-height: 40px;
+    .task {
+      position: relative;
+      border: 1px solid black;
+      background-color: $green;
+      margin: 10px;
+        
+      height: 40px;
+      transition: 0.5s;
+      
+      &__text {
+        font-size: 12px;
+        width:calc(100% - 200px);
+        opacity: 0.8;
+        margin: 0;
+        margin-left: 50px;
+        background-color: #ffffff00;
+        border:none;
+        color: white;
+        height:20px;
+        padding:5px;
+        outline:none;
+        resize:none;
+        font-size: 16px;
+        &:focus{
+            background-color: #ffffff33;
+        }
+      }
+      textarea{
+        width:calc(100% - 80px);
+        height:80px;
+        font-size: 14px;
+     }
+   
+      &.open {
+        height: 200px;
+      }
+      &.finish{
+          opacity: 0.5;
+      }
+    }
+    .buttonBlock {
+      position: absolute;
+      display: flex;
+      right: 20px;
+      top: 0px;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
+      span {
+        background: white;
+        color: $green;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-Block;
+        margin: 5px;
+        font-size: 15px;
+        cursor: pointer;
+        line-height: 20px;
+        text-align: center;
+      }
+    }
+  }
+}
