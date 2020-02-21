@@ -179,7 +179,7 @@ export default {
             }
         }
     }
-    @media screen and (max-width: 1100px) {
+    @media screen and (max-width: 1300px) {
         .regAutMenu{
             margin-top: 20px;
             max-width: 320px;
