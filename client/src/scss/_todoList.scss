@@ -6,79 +6,104 @@
     background-color: white;
     padding: 10px;
     //line-height: 40px;
-    .dropZone{
-        height:20px;
-        width: calc(100% - 20px);
-        background:white;
-        margin: 0 10px;
-        transition: 0.5s;
-        display:flex;
-        align-items: center;
-        opacity:0;   
-        span{
-            position: relative;
-            display:block;
-            height:2px;
-            background: $green;
-            width:100%;
-            &:before{
-                content:"+";
-                text-align: center;
-                position: absolute;
-                color:$green;
-                width:20px;
-                height:20px;
-                left:50%;
-                top:-7px;
-                margin-left: -10px;;
-                background:white;
-                display:inline-block;
-            }
-        }
-        &.dragging{
-            opacity:0.7;   
-           
-        }
-        
-    }
-    .task {
-      position: relative;
-      border: 1px solid black;
-      background-color: $green;
+    .dropZone {
+      height: 20px;
+      width: calc(100% - 20px);
+      background: white;
       margin: 0 10px;
-        
-      height: 40px;
       transition: 0.5s;
-      
-      &__text {
-        font-size: 12px;
-        width:calc(100% - 200px);
-        opacity: 0.8;
-        margin: 5px 0;
-        margin-left: 50px;
-        background-color: #ffffff00;
-        border:none;
-        color: white;
-        height:20px;
-        padding:5px;
-        outline:none;
-        resize:none;
-        font-size: 16px;
-        &:focus{
-            background-color: #ffffff33;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      span {
+        position: relative;
+        display: block;
+        height: 2px;
+        background: $green;
+        width: 100%;
+        &:before {
+          content: "+";
+          text-align: center;
+          position: absolute;
+          color: $green;
+          width: 20px;
+          height: 20px;
+          left: 50%;
+          top: -7px;
+          margin-left: -10px;
+          background: white;
+          display: inline-block;
         }
       }
-      textarea{
-        width:calc(100% - 80px);
-        height:80px;
-        font-size: 14px;
-     }
-   
-      &.open {
-        height: 200px;
+      &.dragging {
+        opacity: 0.7;
       }
-      &.finish{
+    }
+    .taskElement {
+      display: flex;
+      .changePositionBlock {
+        width: 20px;
+        span{
+          width:20px;
+          height:20px;
+          display:block;
+          background: $green;
+          background-size: 50%;
+          background-repeat: no-repeat;
+          background-position: center;
+          border:1px solid white;
+          cursor:pointer;
+          &.up{
+            transform: scale(1, -1);
+            background-image: url("./../assets/icons/triangle.svg");
+          }
+          &.down{
+            background-image: url("./../assets/icons/triangle.svg");
+          }
+          &.disabled{
+            opacity:0.5;
+          }
+        }
+      }
+      .task {
+        position: relative;
+        border: 1px solid black;
+        background-color: $green;
+        margin: 0 10px;
+        width: 100%;
+        height: 40px;
+        transition: 0.5s;
+
+        &__text {
+          font-size: 12px;
+          width: calc(100% - 200px);
+          opacity: 0.8;
+          margin: 5px 0;
+          margin-left: 50px;
+          background-color: #ffffff00;
+          border: none;
+          color: white;
+          height: 20px;
+          padding: 5px;
+          outline: none;
+          resize: none;
+          font-size: 16px;
+          &:focus {
+            background-color: #ffffff33;
+          }
+        }
+        textarea {
+          width: calc(100% - 80px);
+          height: 80px;
+          font-size: 14px;
+        }
+
+        &.open {
+          height: 200px;
+        }
+        &.finish {
           opacity: 0.5;
+        }
       }
     }
     .buttonBlock {
@@ -90,12 +115,12 @@
       justify-content: center;
       align-items: center;
       span {
-       // background: white;
+        // background: white;
         color: $green;
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        border:1px solid white;
+        border: 1px solid white;
         display: inline-Block;
         margin: 5px;
         font-size: 15px;
@@ -105,22 +130,22 @@
         background-size: 50%;
         background-repeat: no-repeat;
         background-position: center;
-        &.buttonBlock__done{
-            border-radius: 0px;
-            transition: 0.5s;
-            &.done{
-                background-image:  url("./../assets/icons/done.svg");
-             }
+        &.buttonBlock__done {
+          border-radius: 0px;
+          transition: 0.5s;
+          &.done {
+            background-image: url("./../assets/icons/done.svg");
+          }
         }
-        &.buttonBlock__open{
-            background-image:  url("./../assets/icons/arrow.svg");
-            transition: 0.5s;
-            &.open{
-               transform: scale(1, -1);
-            }
+        &.buttonBlock__open {
+          background-image: url("./../assets/icons/arrow.svg");
+          transition: 0.5s;
+          &.open {
+            transform: scale(1, -1);
+          }
         }
-        &.buttonBlock__delete{
-            background-image:  url("./../assets/icons/close.svg");
+        &.buttonBlock__delete {
+          background-image: url("./../assets/icons/close.svg");
         }
       }
     }

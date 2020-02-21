@@ -38,8 +38,8 @@ export default{
             state.list.splice(index,1)
           },
         reorder(state, payload){
-            let item = state.list.splice(payload.element,1);
-            state.list.splice(payload.position,0,item[0]);
+             let item = state.list.splice(payload.element,1);
+             state.list.splice(payload.position,0,item[0]);
         },
         changeTaskStatus(state, payload){
             let index=state.list.findIndex(element => element.id==payload);
