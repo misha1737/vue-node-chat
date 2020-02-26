@@ -14,7 +14,7 @@
       <p>click to upload photo</p>
     </div>
     <div class='errorMsg'>
-    {{errorMsg}}
+    {{user.error}}
     </div>
     <form method="post"  enctype="multipart/form-data" id="form-logo-upload">
       <input type="text" v-model="coordinates" class="inputFile" name="coordinates">
@@ -30,7 +30,7 @@
     </form>
     </div>
     <div class="edit-right">
-        {{user}}
+
     </div>
     </div>
       <div class="modalUploadLogo" v-if="img">
@@ -92,6 +92,7 @@ export default {
         let el = document.getElementById("form-logo-upload");
         let formData = new FormData(el);
         this.$store.dispatch("asyncUploadLogo", formData);
+        this.img='';
     },
 
     CropLogo() {

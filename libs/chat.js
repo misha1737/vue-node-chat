@@ -1,6 +1,6 @@
 chat = function(io) {
   var Message = require("../models/message.js").Message;
-  var User = require("../models/user.js").User; 
+  var User = require("../models/user.js").User;
   function spam() {
     letSpamcounter--;
     console.log(letSpamcounter);
@@ -17,9 +17,9 @@ chat = function(io) {
     console.log("Успешное соединение");
 
     socket.on("disconnect", function(data) {
-      console.log("3333")
+      console.log("3333");
       connections.splice(connections.indexOf(socket), 1);
-        console.log("123")
+      console.log("123");
       let pos = users.indexOf(userName);
       if (pos > -1) {
         users.splice(pos, 1);
@@ -53,8 +53,8 @@ chat = function(io) {
         console.log(mute);
       }
       console.log(socket.id);
-      if (!userName){
-        userName=data.login;
+      if (!userName) {
+        userName = data.login;
         users.push(userName);
         console.log("підключився:" + data);
         users.push(userName);
@@ -67,12 +67,11 @@ chat = function(io) {
           message: data.text,
           time: time
         });
-        
+
         message.save(function(err, message, affected) {
           if (err) {
             console.log(err);
           } else {
-            
             letSpamcounter++;
 
             setTimeout(spam, 10000);
@@ -82,17 +81,14 @@ chat = function(io) {
           }
         });
 
-        
-        User.findOne({login:userName}).then(userData => {
- 
-        
-        io.sockets.emit("add mess", {
-          user: userName,
-          msg: data.text,
-          logoUrl: userData.logoUrl,
-          time: Date.now()
+        User.findOne({ login: userName }).then(userData => {
+          io.sockets.emit("add mess", {
+            user: userName,
+            msg: data.text,
+            logoUrl: userData.logoUrl,
+            time: Date.now()
+          });
         });
-        })
       } else {
       }
 
@@ -113,7 +109,6 @@ chat = function(io) {
     socket.on("getHistory", function(data) {
       let perPage = 30;
       let page = data;
-
       Message.find({})
         .sort({ $natural: -1 })
         .limit(perPage)
@@ -122,52 +117,41 @@ chat = function(io) {
           if (!history) {
             console.log("errHisstory");
           } else {
-           
-            io.sockets.emit("loadHistory", {
-              history: history,
-              login: userName
-            });
+            getUsersLogo(history);
           }
         });
     });
-    socket.on("getLoginUrl", function(data) {
-      
-      let namemas=[];
-      for(let i in data){
-        namemas.push(data[i].name);
+    function getUsersLogo(history) {
+      let namemas = [];
+      for (let i in history) {
+        namemas.push(history[i].login);
       }
+      //console.log(namemas);
 
-    
-      User.find({login:{ $in:  namemas } }).then(
-        result =>{
-          if (!result) {
-            console.log("errUserlogin");
-        }else{
-         let data= []
-         
-         for(let i=0; i < result.length; i++){
-           data.push({
-             name:result[i].login,
-             logoUrl:result[i].logoUrl
-            })
+      User.find({ login: { $in: namemas } }).then(result => {
+        if (!result) {
+          console.log("errUserlogin");
+        } else {
+          let userslogo = [];
+          for (let i = 0; i < result.length; i++) {
+            userslogo.push({
+              name: result[i].login,
+              logoUrl: result[i].logoUrl
+            });
+          }
+
+          io.sockets.emit("loadHistory", {
+            userslogo: userslogo,
+            history: history,
+            login: userName
+          });
+          //     io.sockets.emit("loadLogoUrl", data);
         }
-        
-          io.sockets.emit("loadLogoUrl", data);
-        }
-
-        }
-      )
-
-     
-
-    });
+      });
+    }
     socket.on("writeMessage", function(data) {
-        
-        io.sockets.emit("writingUser", data.login);
+      io.sockets.emit("writingUser", data.login);
     });
-    
-
-
   });
 };
 

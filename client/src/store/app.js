@@ -23,6 +23,12 @@ export default {
     setError(state, payload) {
       if (payload) {
         switch (payload) {
+          
+          case "access error":
+            state.user.error = null;
+            state.user.login = null;
+            state.user.logoUrl = null;
+            break;
           case "name is already taken":
             state.user.error = "Name is already taken";
             break;
@@ -40,10 +46,10 @@ export default {
             state.user.error = "Your login must be between 5 and 30 characters";
             break;
           case "file too big":
-            this.errorMsg = "file too big";
+            state.user.error  = "file too big";
             break;
           case "wrong format":
-            this.errorMsg = "wrong format";
+            state.user.error  = "wrong format";
             break;
           default:
             state.user.error = payload;
@@ -64,7 +70,10 @@ export default {
         withCredentials: true
       }).then(response => {
         context.commit("setUser", response.data);
-      });
+      }).catch(error => {
+        console.log(error)
+        context.commit("setError", error.response.data);
+      })
     },
     asyncSignOut(context) {
       axios({
@@ -143,7 +152,7 @@ export default {
           console.log("file downloaded");
         })
         .catch(error => {
-          console.log(error);
+          console.log(error.response.data);
           context.commit("setError", error.response.data);
         });
     }
