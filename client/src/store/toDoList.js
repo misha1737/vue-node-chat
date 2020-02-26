@@ -59,11 +59,11 @@ export default{
         }
      },
      actions:{
-         asyncChangeCounter(context, payload){
-             setTimeout(()=>{
-                 context.commit('changeCounter', payload)
-             },1000)
-         }    
+        //  asyncChangeCounter(context, payload){
+        //      setTimeout(()=>{
+        //          context.commit('changeCounter', payload)
+        //      },1000)
+        //  }    
      },
      getters:{
          getList(state){

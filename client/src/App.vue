@@ -1,67 +1,63 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <div>
-    <Header :auth='auth' :user='user' @logout='logout'></Header>
-    <authorization class="pageContent" @login='Login' :user='user' v-if='!auth'></authorization>  
-    <router-view class="pageContent" :user='user'  @login='Login'  v-if='auth'></router-view>
+      <Header :user="user" @logout="logout"></Header>
+      <authorization
+        class="pageContent"
+        @login="Login"
+        :user="user"
+        v-if="!user || !user.login"
+      ></authorization>
+      <router-view
+        class="pageContent"
+        :user="user"
+        @login="Login"
+        v-if="user && user.login"
+      ></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import Header from './components/Header.vue'
-import authorization from './components/Auth.vue'
-import io from "socket.io-client"
+import axios from "axios";
+import Header from "./components/Header.vue";
+import authorization from "./components/Auth.vue";
+import io from "socket.io-client";
 
 export default {
-  name: 'app',
-   data(){
-            return{
-              user:{},
-              auth:false,
-              socket: io("http://localhost:5000")
-            }
-        },
+  name: "app",
+  data() {
+    return {
+      socket: io("http://localhost:5000")
+    };
+  },
+
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
+    }
+  },
+
   components: {
     Header,
     authorization
   },
-  methods:{
-    Login(user){
-      this.auth=true;
-      this.user=user;
-    },
-    logout(){
-      this.auth=false;
-      this.user=null;
+  methods: {
+    Login(user) {},
+    logout() {
       this.socket.disconnect();
     }
   },
-   beforeCreate(){
-             axios({
-                    method: 'get',
-                    url: 'http://localhost:5000/',
-                    crossDomain: true,
-                    withCredentials: true
-                    }).then(response => {
-                       console.log(response.data.login);
-                       this.user.login=response.data.login;
-                       this.auth=true;
-                       if(response.data.logoUrl){
-                      this.user.logoUrl='http://localhost:5000/'+response.data.logoUrl;
-                       }
-                    })    
-        } 
-        
-}
+  beforeCreate() {
+    this.$store.dispatch("asyncGetUser");
+  }
+};
 </script>
 
 <style lang="scss">
 @import "scss/variables.scss";
 @import "scss/base.scss";
-  .pageContent{
-    margin-top:40px;
-  }
-
+.pageContent {
+  margin-top: 40px;
+}
 </style>

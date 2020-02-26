@@ -1,8 +1,17 @@
 <template>
   <div class="toDo">
     <h1>ToDo List</h1>
-    <button class="addTask" @click="create">+</button>
+    
+
     <div class="list">
+        <button class="addTask" @click="create">+</button>
+
+        <!-- <div class="checked" >
+              <input type="checkBox" name="state" class="check" @click="checked = !checked" />
+              <label for="state"></label>
+              <span @click="checked = !checked">Больше не запрашивать</span>
+        </div> -->
+
       <div v-for="(task, id) in list" :key="id">
         <drop
           class="dropZone"
@@ -51,7 +60,8 @@ export default {
   name: "HomePage",
   data() {
     return {
-      dragging: null
+      dragging: null,
+      checked: false
     };
   },
   props: {},
@@ -81,4 +91,46 @@ export default {
 @import "./../scss/_variables.scss";
 @import "./../scss/_base.scss";
 @import "./../scss/_ToDoList.scss";
+
+.check {
+  display:inline-block; 
+  position: static;
+  width:20px;
+  height:20px;
+  z-index: 2;
+  opacity: 0.3;
+  margin: 0px ;
+}
+.check + label {
+  position: relative;
+  // padding: 0 0 0 60px;
+  cursor: pointer;
+}
+.check + label:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  border: 1px solid red;
+  transition: 0.2s;
+}
+.check:checked + label:before {
+  background: #fff;
+}
+.check:checked + label:after {
+  content: '';
+  //background-image: url("./../assets/icons/done.svg");
+  background-color: red;
+  color: red;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height:7px;
+  width:9px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 </style>

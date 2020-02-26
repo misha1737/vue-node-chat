@@ -30,7 +30,7 @@
     </form>
     </div>
     <div class="edit-right">
-        
+        {{user}}
     </div>
     </div>
       <div class="modalUploadLogo" v-if="img">
@@ -62,17 +62,22 @@ export default {
      coordinates: ''
     };
   },
+
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
+    }
+  },
+
   props: {
     msg: String,
-    user: Object
+    //user: Object
   },
   components:{
-
     Cropper
   },
   methods: {
     change({coordinates, canvas}) {
-      console.log(coordinates, canvas)
       this.coordinates=JSON.stringify(coordinates);
     },
     close(){
@@ -84,43 +89,9 @@ export default {
       if (el) el.click();
     },
     UploadLogo(){
-
-      let el = document.getElementById("form-logo-upload");
-      var formData = new FormData(el);
-
-      Axios({
-        method: "post",
-        url: "http://localhost:5000/uploadImg",
-        crossDomain: true,
-        withCredentials: true,
-        data: formData
-      })
-        .then(response => {
-          console.log(response.data.logoUrl);
-          let user={
-                        login:response.data.login,
-                        logoUrl:'http://localhost:5000/'+response.data.logoUrl
-                    }
-          this.$emit('login', user);
-          this.errorMsg='';
-          this.img= '';
-          console.log("file downloaded");
-        })
-        .catch(error => {
-          console.log(error);
-           this.img= '';
-          switch (error.response.data) {
-            case "file too big":
-              this.errorMsg = "file too big";
-              break;
-            case "wrong format":
-              this.errorMsg = "wrong format";
-              break;
-            default:
-              this.errorMsg = "unknown error";
-              break;
-          }
-        });
+        let el = document.getElementById("form-logo-upload");
+        let formData = new FormData(el);
+        this.$store.dispatch("asyncUploadLogo", formData);
     },
 
     CropLogo() {
@@ -141,9 +112,7 @@ export default {
        Main();
     }
   },
-  create(){
-    
-  }
+
 };
 </script>
 
